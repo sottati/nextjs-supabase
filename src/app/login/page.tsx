@@ -10,6 +10,7 @@ import { Card,
 import { Input } from '@/components/ui/input';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import { OAuthButtons } from './oauth-sigin';
 
 export default async function LoginPage() {
 
@@ -29,17 +30,14 @@ export default async function LoginPage() {
           <CardDescription>Inicia Sesion</CardDescription>
         </CardHeader>
         <CardContent>
-          <form  className='flex flex-col gap-2'>
-            <label htmlFor="email">Email:</label>
+          <form  className='flex flex-col gap-4'>
+            {/* <label htmlFor="email">Email:</label> */}
             <Input id="email" placeholder="Email" name="email" type="email" required  />
-            {/* <input id="email" name="email" type="email" required /> */}
-            <label htmlFor="password">Password:</label>
+            {/* <label htmlFor="password">Password:</label> */}
             <Input id="password" placeholder="password" name="password" type="password" required  />
-            {/* <input id="password" name="password" type="password" required /> */}
             <Button formAction={emaillogin}>Log in</Button>
-            {/* <button formAction={login}>Log in</button> */}
-            <Button formAction={signup}>Sign up</Button>
-            {/* <button formAction={signup}>Sign up</button> */}
+            <OAuthButtons />
+            <Button variant="link" formAction={signup}>Sign up</Button>
           </form>
         </CardContent>
       </Card>
