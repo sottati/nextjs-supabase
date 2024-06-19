@@ -1,6 +1,5 @@
 "use client"
 
-"use client";
 import { addTodo } from "@/app/todos/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

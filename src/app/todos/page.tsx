@@ -17,7 +17,7 @@ export default async function ToDosPage() {
     const { data: todos } = await supabase.from("todos").select().order("inserted_at", { ascending: false })
 
   return (
-    <section className="mt-12 p-3 pt-6 max-w-2xl w-full flex flex-col gap-4">
+    <section className="mt-12 w-full max-w-2xl mx-auto flex flex-col justify-center p-8 gap-4">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
         Todo's
       </h1>
