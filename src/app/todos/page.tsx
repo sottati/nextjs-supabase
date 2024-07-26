@@ -7,13 +7,10 @@ import { Separator } from '@/components/ui/separator';
 
 export default async function ToDosPage() {
     const supabase = await createClient();
-
     const { data: { user }, } = await supabase.auth.getUser();
-
     if (!user) {
         return redirect("/login")
     }
-
     const { data: todos } = await supabase.from("todos").select().order("inserted_at", { ascending: false })
 
   return (
@@ -23,9 +20,6 @@ export default async function ToDosPage() {
       </h1>
       <Separator className="w-full " />
       <ToDoList todos={todos ?? []} />
-  </section>
-    // <div className='grid place-items-center gap-4 p-24'>
-    //   <ToDoList />
-    // </div>
+    </section>
   )
 }
