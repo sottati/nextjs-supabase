@@ -8,13 +8,8 @@ import { User } from 'lucide-react';
 
 
 export default async function Navbar() {
-
     const supabase = await createClient();
-
     const { data: { user }} = await supabase.auth.getUser();
-
-    console.log(user?.user_metadata.user_name)
-
   return (
     <div className="absolute top-4 left-4 flex flex-row gap-2">
         <ThemeToggler />

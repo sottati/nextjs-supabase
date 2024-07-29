@@ -9,7 +9,7 @@ import Navbar from "@/components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "To Do App | sottati",
+  title: "Dolar App | sottati",
   description: "Creada por el mascapito de sottati",
 };
 
@@ -26,7 +26,7 @@ export default function RootLayout({
             attribute="class"
             defaultTheme="system"
             enableSystem
-            themes={["red", "dark", "light"]}
+            themes={["red", "dark", "light", "aesthetic"]}
             disableTransitionOnChange
           >
             {children}
