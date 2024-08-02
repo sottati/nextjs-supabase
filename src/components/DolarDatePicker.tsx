@@ -1,39 +1,41 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useState } from "react"
-import { addDays, format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
-import { DateRange } from "react-day-picker"
+import * as React from "react";
+import { useState } from "react";
+import { addDays, format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { DateRange } from "react-day-picker";
 
-import { geDolarInRange } from "@/app/dolar/actions"
+import { getDolarInRange } from "@/app/dolar/actions";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DateRangeProp } from "@/types/custom";
 
-import DolarChart from "./DolarChart"
+interface DatePickerWithRangeProps {
+  setDateRange: React.Dispatch<React.SetStateAction<DateRangeProp>>;
+}
 
 export default function DatePickerWithRange({
-  className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+  setDateRange,
+}: DatePickerWithRangeProps) {
   const [date, setDate] = useState<DateRange | undefined>({
     from: addDays(new Date(), -30),
     to: new Date(),
-    // to: addDays(new Date(), 0),
-  })
+  });
   const [dolarData, setDolarData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,8 +48,12 @@ export default function DatePickerWithRange({
     setIsLoading(true);
 
     try {
-      const { data } = await geDolarInRange(date.from, date.to);
-      setDolarData(data || []);
+      const formattedDateRange = {
+        from: format(date.from, "yyyy-MM-dd"),
+        to: format(date.to, "yyyy-MM-dd"),
+      };
+
+      setDateRange(formattedDateRange);
     } catch (error) {
       console.error("Error al obtener los datos:", error);
     } finally {
@@ -56,14 +62,14 @@ export default function DatePickerWithRange({
   };
 
   return (
-    <div className={cn("flex flex-row flex-wrap gap-2", className)}>
+    <div className={cn("flex flex-row flex-wrap gap-2")}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-normal",
+              "justify-start text-left font-normal",
               !date && "text-muted-foreground"
             )}
           >
@@ -71,8 +77,17 @@ export default function DatePickerWithRange({
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y")} -{" "}
-                  {format(date.to, "LLL dd, y")}
+                  {date.from.toLocaleDateString("es-ES", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}{" "}
+                  -{" "}
+                  {date.to.toLocaleDateString("es-ES", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
                 </>
               ) : (
                 format(date.from, "LLL dd, y")
@@ -83,21 +98,6 @@ export default function DatePickerWithRange({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
-            {/* <Select
-            onValueChange={(value) =>
-                setDate(addDays(new Date(), parseInt(value)))
-            }
-            >
-            <SelectTrigger>
-                <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent position="popper">
-                <SelectItem value="0">Today</SelectItem>
-                <SelectItem value="1">Tomorrow</SelectItem>
-                <SelectItem value="3">In 3 days</SelectItem>
-                <SelectItem value="7">In a week</SelectItem>
-            </SelectContent>
-            </Select> */}
           <Calendar
             initialFocus
             mode="range"
@@ -108,10 +108,9 @@ export default function DatePickerWithRange({
           />
         </PopoverContent>
       </Popover>
-      <Button variant="outline" onClick={handleFetchData} disabled={isLoading}>{isLoading ? 'Cargando...' : 'Obtener Datos'}</Button>
-      <p className="my-auto text-center">
-        Desde: {date?.from ? format(date.from, 'dd/MM/yyyy') : 'Sin fecha'} hasta: {date?.to ? format(date.to, 'dd/MM/yyyy') : 'Sin fecha'}
-      </p>
+      <Button variant="outline" onClick={handleFetchData} disabled={isLoading}>
+        {isLoading ? "Cargando..." : "Obtener Datos"}
+      </Button>
     </div>
-  )
+  );
 }

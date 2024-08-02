@@ -6,6 +6,7 @@ import { DayPicker } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
+import { es } from "date-fns/locale"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
@@ -57,6 +58,8 @@ function Calendar({
         IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
         IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
       }}
+      locale={es}
+      weekStartsOn={1}
       {...props}
     />
   )

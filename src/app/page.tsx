@@ -1,7 +1,9 @@
 export default function Home() {
   return (
-    <main className="grid place-items-center gap-4 p-4">
-      <h1>To Do List App</h1>
-    </main>
+    <section className="">
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        Pagina oficial de Simon
+      </h1>
+    </section>
   );
 }

@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { Dolar } from '@/types/custom';  // Asegúrate de tener el tipo Dolar definido correctamente
+import { DateRangeProp, Dolar, DolarChartProps } from '@/types/custom';  // Asegúrate de tener el tipo Dolar definido correctamente
 
 export async function GetDolarTable() {
   const supabase = createClient();
@@ -29,7 +29,7 @@ export async function GetDolarTable() {
 }
 
 
-export async function getDolartInRange( fromDate: Date, toDate: Date ) {
+export async function getDolarInRange(dateRange: DateRangeProp) {
   const supabase = createClient()
   const { data: { user }, error: userError } = await supabase.auth.getUser();
 
@@ -39,19 +39,14 @@ export async function getDolartInRange( fromDate: Date, toDate: Date ) {
   }
 
   if (!user) {
-    redirect("/login");
-    return null;
+    return { error: "User not authenticated" };
   }
-
-  // Convertir las fechas a formato ISO string
-  const fromISOString = fromDate.toISOString();
-  const toISOString = toDate.toISOString();
 
   const { data, error } = await supabase
     .from<Dolar>("Dolar")
     .select()
-    .gte('date', fromISOString)  // Fecha de inicio
-    .lte('date', toISOString)    // Fecha final
+    .gte('date', dateRange.from)  // Fecha de inicio
+    .lte('date', dateRange.to)    // Fecha final
     .order('date', { ascending: true }); // Ordenar por fecha
 
   if (error) {
